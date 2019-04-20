@@ -1,7 +1,6 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="custom-home">
+    <HelloWorld/>
   </div>
 </template>
 
@@ -13,6 +12,15 @@ export default {
   name: 'home',
   components: {
     HelloWorld
+  },
+  beforeCreate: function(){
+    fetch(this.$store.state.apiUrl + '/api/user', {
+      method: "GET",
+    }).then(res =>{
+      return res.json();
+    }).then(res=>{
+      console.log(res);
+    });
   }
 }
 </script>

@@ -1,0 +1,72 @@
+*{
+    color: #fff;
+}
+
+.custom-bg-dark{
+    background-color:  rgba(124, 128, 124, 0.467) !important;
+}
+
+nav.navbar{
+    height: 6rem;
+}
+
+a.navbar-brand{
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 200;
+}
+
+li.nav-item a{
+    text-transform: uppercase;
+}
+
+div#app-container{
+    position: fixed;
+    top:96px;
+    left:0;
+    bottom: 96px;
+    width: 100%;
+    padding:2rem;
+    background-color: #1d2733;
+    overflow:auto;
+}
+
+footer#custom-footer{
+    height: 6rem;
+    background-color: rgba(124, 128, 124, 0.467);
+    font-size: 1rem;
+    position:fixed;
+    bottom:0;
+    width:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div#custom-home{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-primary{
+    background-color: #32aced !important;
+}
+
+.btn-success{
+    background-color: #4fc08d !important;
+}
+
+.btn-success:hover{
+    background-color:#3da998;
+}
+
+form.custom-form{
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+}
