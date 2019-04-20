@@ -16,6 +16,7 @@
     "core-js": "^2.6.5",
     "express": "^4.16.4",
     "jquery": "^3.4.0",
+    "mongoose": "^5.5.2",
     "popper.js": "^1.15.0",
     "underscore.string": "^3.3.5",
     "vue": "^2.6.10",

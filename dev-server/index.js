@@ -4,8 +4,10 @@ const port = 3000;
 
 import { registerRoutes } from './routes';
 import { setEnvironment } from './config/env';
+import { connectToDb } from './config/db'
 
 setEnvironment(app);
+connectToDb();
 registerRoutes(app);
 
 app.get('/', function (req, res) {

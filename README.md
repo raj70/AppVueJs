@@ -43,6 +43,30 @@ And on package.json
 "concurrently": "concurrently \"babel dev-server --out-dir prod-server --watch\" \"nodemon prod-server/index.js\" \"npm run serve\" "
 
 
+
+## mongoose
+https://mongoosejs.com
+
+### example
+  var mongoose = require('mongoose');
+  var Schema = mongoose.Schema;
+
+  var blogSchema = new Schema({
+    title:  String,
+    author: String,
+    body:   String,
+    comments: [{ body: String, date: Date }],
+    date: { type: Date, default: Date.now },
+    hidden: Boolean,
+    meta: {
+      votes: Number,
+      favs:  Number
+    }
+  });
+
+
+
+
 ## Project setup
 ```
 npm install

@@ -8,9 +8,12 @@ var _routes = require("./routes");
 
 var _env = require("./config/env");
 
+var _db = require("./config/db");
+
 var app = (0, _express.default)();
 var port = 3000;
 (0, _env.setEnvironment)(app);
+(0, _db.connectToDb)();
 (0, _routes.registerRoutes)(app);
 app.get('/', function (req, res) {
   console.log(process.env.NODE_ENV);
