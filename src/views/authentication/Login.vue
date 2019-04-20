@@ -21,15 +21,15 @@
 <script>
     import * as auth from '../../services/AuthService';
 
-export default {
-    name: 'login',
-    methods:{
-        onSubmit:function(event){
-            event.preventDefault();
-            auth.login();
-            this.$router.push({name: 'home'});
+    export default {
+        name: 'login',
+        methods:{
+            onSubmit:function(event){
+                event.preventDefault();
+                auth.login();
+                this.$router.push({name: 'home'});
+            }
         }
     }
-}
 </script>
 

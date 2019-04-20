@@ -12,6 +12,8 @@ exports.default = void 0;
 
 var _mongoose = _interopRequireDefault(require("mongoose"));
 
+var _bcryptNodejs = _interopRequireDefault(require("bcrypt-nodejs"));
+
 var _underscore = _interopRequireDefault(require("underscore.string"));
 
 var userSchema = new _mongoose.default.Schema({
@@ -28,10 +30,18 @@ userSchema.virtual('fullName').get(function () {
 
   return "".concat(first, "  ").concat(last);
 });
+/* static methods */
+
+userSchema.statics.passwordMatches = function (password, hash) {
+  return _bcryptNodejs.default.compareSync(password, hash);
+};
+
 userSchema.pre('save', function (next) {
   this.username = this.username.toLowerCase();
   this.first = this.first.toLowerCase();
   this.last = this.last.toLowerCase();
+  var unsafepassword = this.password;
+  this.password = _bcryptNodejs.default.hashSync(unsafepassword);
   next();
 });
 

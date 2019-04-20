@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
   }
 });
 app.listen(port, function () {
-  return console.log("Vue app listening on port ".concat(port, "! on ").concat(process.env.NODE_ENV));
+  return console.log("Vue server listening on port ".concat(port, "! on ").concat(process.env.NODE_ENV));
 });
 /*
 const http = require('http');

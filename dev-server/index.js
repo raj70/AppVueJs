@@ -19,7 +19,7 @@ app.get('/', function (req, res) {
   }
 });
 
-app.listen(port, () => console.log(`Vue app listening on port ${port}! on ${process.env.NODE_ENV}`))
+app.listen(port, () => console.log(`Vue server listening on port ${port}! on ${process.env.NODE_ENV}`))
 
 
 
