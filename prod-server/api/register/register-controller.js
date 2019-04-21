@@ -32,6 +32,8 @@ function index(req, res) {
     last: req.body.last
   });
   user.save(function (error) {
+    console.log(error);
+
     if (error) {
       if (error.code === 11000) {
         /* 11000 means user taken */

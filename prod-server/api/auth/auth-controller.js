@@ -16,6 +16,8 @@ var _userModel = _interopRequireDefault(require("../../model/user-model"));
 
 var validator = _interopRequireWildcard(require("../../utilities/user-password-validate"));
 
+var _authService = require("../../services/auth-service");
+
 function index(req, res) {
   var validation = validator.validate(req.body);
 
@@ -41,7 +43,10 @@ function index(req, res) {
     if (!passwordsMatch) {
       return res.status(401).json();
     } else {
-      return res.status(200).json();
+      var token = (0, _authService.generateJwt)(user);
+      return res.status(200).json({
+        token: token
+      });
     }
   });
 }

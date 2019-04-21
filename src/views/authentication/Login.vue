@@ -5,14 +5,14 @@
     <form class="custom-form" v-on:submit="onSubmit">
         <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" placeholder="username">            
+            <input v-model="username" type="text" class="form-control" id="username" placeholder="username">            
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password">
+            <input v-model="password" type="password" class="form-control" id="password" placeholder="Password">
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Login</button>
         </div>
     </form>
     </div>
@@ -23,10 +23,25 @@
 
     export default {
         name: 'login',
+        data: function(){
+            return{
+                username: '',
+                password: ''
+            }
+        },
         methods:{
-            onSubmit:function(event){
+            onSubmit: async function(event){
                 event.preventDefault();
-                auth.login();
+                const user = {
+                    username : this.username,
+                    password : this.password
+                };                
+                await auth.login(user).then( ()=>{
+                    console.log("loging successful");
+                }).catch(error => {
+                    console.log(error);
+                });
+
                 this.$router.push({name: 'home'});
             }
         }

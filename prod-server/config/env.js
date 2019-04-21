@@ -29,6 +29,7 @@ function setEnvironment(app) {
 var setDevEnv = function setDevEnv(app) {
   process.env.NODE_ENV = "development";
   process.env.DB_URL = 'mongodb://localhost:27017/task-dev-db';
+  process.env.SIGN_SECRET = 'my-development-token';
   app.use(_bodyParser.default.json());
   app.use((0, _morgan.default)('dev'));
   app.use((0, _cors.default)());
@@ -37,6 +38,7 @@ var setDevEnv = function setDevEnv(app) {
 var setProdEnv = function setProdEnv(app) {
   process.env.NODE_ENV = "production";
   process.env.DB_URL = 'mongodb://localhost:27017/task-prod-db';
+  process.env.SIGN_SECRET = 'my-production-token';
   app.use(_bodyParser.default.json());
   app.use(_express.default.static(__dirname + '/../dist'));
 };

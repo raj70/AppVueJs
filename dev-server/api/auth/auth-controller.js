@@ -1,6 +1,7 @@
 import User from '../../model/user-model';
 
 import * as validator from '../../utilities/user-password-validate';
+import {generateJwt} from '../../services/auth-service'
 
 export function index(req, res){
     var validation = validator.validate(req.body);
@@ -19,9 +20,8 @@ export function index(req, res){
         if(!passwordsMatch){
             return res.status(401).json();
         }else{
-            return res.status(200).json();
+            const token = generateJwt(user);
+            return res.status(200).json({token: token});
         }
     })
 }
-
-

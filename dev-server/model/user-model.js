@@ -18,7 +18,7 @@ userSchema.virtual('fullName').get(function(){
 })
 
 /* static methods */
-userSchema.statics.passwordMatches = function(password, hash) {
+userSchema.statics.passwordMatches = function(password, hash) {    
     return bcrypt.compareSync(password,hash);
 }
 

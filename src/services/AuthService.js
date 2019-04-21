@@ -9,8 +9,9 @@ export function isLoggedIn(){
 export function login(user){
    return http().post("/auth", user).then(res => {
         if(res){
+            console.log(res);
             const fakeToken = {
-                token: 'my-token'
+                token: res.data.token
             }
             setToken(fakeToken);
         }
@@ -18,8 +19,18 @@ export function login(user){
 }
 
 function setToken(token){
-    localStorage.setItem('token', JSON.stringify(token));
-    store.dispatch('authenticate')
+    localStorage.setItem('token', token);
+    store.dispatch('authenticate');
+}
+
+export function getToken(){
+    return localStorage.getItem('token');
+}
+
+export function logout(){
+    console.log("logging out");
+    localStorage.removeItem('token');
+    store.dispatch('authenticate');
 }
 
 export function getUsername(){

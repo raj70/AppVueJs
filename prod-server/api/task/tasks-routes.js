@@ -16,12 +16,14 @@ var _express = _interopRequireDefault(require("express"));
 
 var controller = _interopRequireWildcard(require("./task-controller"));
 
+var auth = _interopRequireWildcard(require("../../services/auth-service"));
+
 var router = _express.default.Router();
 
-router.post('/task', controller.create);
-router.get('/task', controller.index);
-router.get('/task/:id', controller.show);
-router.put('/task', controller.update);
-router.delete('/task', controller.remove);
+router.post('/task', auth.requireLogin, controller.create);
+router.get('/task', auth.requireLogin, controller.index);
+router.get('/task/:id', auth.requireLogin, controller.show);
+router.put('/task', auth.requireLogin, controller.update);
+router.delete('/task', auth.requireLogin, controller.remove);
 var _default = router;
 exports.default = _default;
