@@ -18,7 +18,7 @@ export function index(req, res){
 
         const passwordsMatch = User.passwordMatches(req.body.password, user.password);
         if(!passwordsMatch){
-            return res.status(401).json();
+            return res.status(401).json({message: "username or password does not match"});
         }else{
             const token = generateJwt(user);
             return res.status(200).json({token: token});

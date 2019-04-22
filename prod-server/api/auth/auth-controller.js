@@ -41,7 +41,9 @@ function index(req, res) {
     var passwordsMatch = _userModel.default.passwordMatches(req.body.password, user.password);
 
     if (!passwordsMatch) {
-      return res.status(401).json();
+      return res.status(401).json({
+        message: "username or password does not match"
+      });
     } else {
       var token = (0, _authService.generateJwt)(user);
       return res.status(200).json({

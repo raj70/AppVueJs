@@ -8,7 +8,7 @@ export function generateJwt(user){
 export function requireLogin(req, res, next){
     var token = decodeToken(req);
     if(!token){
-        return res.statu(401).json({message: "you need to login"});
+        return res.status(401).json({message: "you need to login"});
     }
     next();
 }
@@ -21,8 +21,28 @@ export function decodeToken(req){
     }
 
     try{
-        return jsonwebtoken.verify(token, process.env.TOKEN_SECRET);
+        const isValid = jsonwebtoken.verify(token, process.env.SIGN_SECRET);
+        return isValid;
     }catch(error){
+        console.log(error);
         return null;
     }
+}
+
+export function getUserName(req){
+    const token = decodeToken(req);
+    if(!token){
+        return null;
+    }
+
+    return token.user.username;
+}
+
+export function getUserId(req){
+    const token = decodeToken(req);
+    if(!token){
+        return null;
+    }
+
+    return token.user.id;
 }

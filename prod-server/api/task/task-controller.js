@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireWildcard = require("/Users/rshrestha/Desktop/Html/VueJs/raj-vue/node_modules/@babel/runtime-corejs2/helpers/interopRequireWildcard");
+
 var _interopRequireDefault = require("/Users/rshrestha/Desktop/Html/VueJs/raj-vue/node_modules/@babel/runtime-corejs2/helpers/interopRequireDefault");
 
 var _Object$defineProperty = require("/Users/rshrestha/Desktop/Html/VueJs/raj-vue/node_modules/@babel/runtime-corejs2/core-js/object/define-property");
@@ -24,6 +26,8 @@ var _userModel = _interopRequireDefault(require("../../model/user-model"));
 
 var _taskModel = _interopRequireDefault(require("../../model/task-model"));
 
+var auth = _interopRequireWildcard(require("../../services/auth-service"));
+
 function index(req, res) {
   // find all task
   _taskModel.default.find({}, function (error, tasks) {
@@ -41,7 +45,7 @@ function index(req, res) {
 
 function create(req, res) {
   //create task
-  var id = 1;
+  var id = auth.getUserId(req);
 
   _userModel.default.findOne({
     _id: id
@@ -55,7 +59,9 @@ function create(req, res) {
     task.dueDate = (0, _moment.default)(task.dueDate);
     task.save(function (error) {
       if (error) {
-        return res.status(500).json();
+        return res.status(500).json({
+          message: "Not able to save task"
+        });
       }
 
       return res.status(201).json();
@@ -65,7 +71,7 @@ function create(req, res) {
 
 function update(req, res) {
   //update task
-  var id = 1;
+  var id = auth.getUserId(req);
 
   _userModel.default.findOne({
     _id: id
@@ -96,7 +102,7 @@ function update(req, res) {
 
 function remove(req, res) {
   //delete a task
-  var id = 1;
+  var id = auth.getUserId(req);
 
   _taskModel.default.findOne({
     _id: req.params.id

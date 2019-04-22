@@ -36,8 +36,7 @@
                     username : this.username,
                     password : this.password
                 };                
-                await auth.login(user).then( ()=>{
-                    console.log("loging successful");
+                await auth.login(user).then(()=>{
                 }).catch(error => {
                     console.log(error);
                 });

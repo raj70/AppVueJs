@@ -1,5 +1,6 @@
 import store from "../store";
 import {http} from "./HttpService";
+import jwt from 'jsonwebtoken';
 
 export function isLoggedIn(){
     const token = localStorage.getItem('token');
@@ -7,14 +8,11 @@ export function isLoggedIn(){
 }
 
 export function login(user){
-   return http().post("/auth", user).then(res => {
-        if(res){
-            console.log(res);
-            const fakeToken = {
-                token: res.data.token
+   return http().post("/auth", user)
+        .then(res => {        
+            if(res){
+                setToken(res.data.token);
             }
-            setToken(fakeToken);
-        }
    });
 }
 
@@ -24,21 +22,30 @@ function setToken(token){
 }
 
 export function getToken(){
-    return localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    return token;
 }
 
 export function logout(){
-    console.log("logging out");
     localStorage.removeItem('token');
     store.dispatch('authenticate');
 }
 
 export function getUsername(){
-    return 'rajen';
+    const token = decodeToken();
+    if(!token){
+        return null;
+    }
+    return token.user.username;
 }
 
 export function getUserId(){
-    return 1;
+    const token = decodeToken();
+    if(!token){
+        return null;
+    }
+
+    return token.user.id;
 }
 
 export function registerUser(user){
@@ -47,4 +54,12 @@ export function registerUser(user){
             console.log(res);
         }
     });
+}
+
+function decodeToken(){
+    const token = getToken();
+    if(!token){
+        return null;
+    }
+    return jwt.decode(token);
 }

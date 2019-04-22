@@ -27,7 +27,6 @@ const routes =  new Router({
       component: TasksAll,
       beforeEnter: (to, from , next) =>{
         if(isLoggedIn()){
-          console.log(to, from ,"TaskAll");
           next();
         }else{
           next('/login');

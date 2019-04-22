@@ -11,6 +11,8 @@ _Object$defineProperty(exports, "__esModule", {
 exports.generateJwt = generateJwt;
 exports.requireLogin = requireLogin;
 exports.decodeToken = decodeToken;
+exports.getUserName = getUserName;
+exports.getUserId = getUserId;
 
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
@@ -28,7 +30,7 @@ function requireLogin(req, res, next) {
   var token = decodeToken(req);
 
   if (!token) {
-    return res.statu(401).json({
+    return res.status(401).json({
       message: "you need to login"
     });
   }
@@ -44,8 +46,31 @@ function decodeToken(req) {
   }
 
   try {
-    return _jsonwebtoken.default.verify(token, process.env.TOKEN_SECRET);
+    var isValid = _jsonwebtoken.default.verify(token, process.env.SIGN_SECRET);
+
+    return isValid;
   } catch (error) {
+    console.log(error);
     return null;
   }
+}
+
+function getUserName(req) {
+  var token = decodeToken(req);
+
+  if (!token) {
+    return null;
+  }
+
+  return token.user.username;
+}
+
+function getUserId(req) {
+  var token = decodeToken(req);
+
+  if (!token) {
+    return null;
+  }
+
+  return token.user.id;
 }

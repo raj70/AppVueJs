@@ -51,6 +51,13 @@ And on package.json
 "concurrently": "concurrently \"babel dev-server --out-dir prod-server --watch\" \"nodemon prod-server/index.js\" \"npm run serve\" "
 
 
+# Bootstrap + Vue
+https://bootstrap-vue.js.org
+
+npm i vue bootstrap-vue bootstrap
+but 
+npm instal vue bootstrap-vue
+
 
 # MongoDb
 ## to run mongo db server
