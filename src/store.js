@@ -2,7 +2,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import * as auth from './services/AuthService';
-
+/**
+ *  vuex is state management; 
+ * centrelised store for all the component is this application
+  * https://vuex.vuejs.org
+ */
 Vue.use(Vuex)
 
 export default new Vuex.Store({

@@ -9,92 +9,91 @@ import TasksEdit from './views/tasks/TasksEdit.vue';
 
 import {isLoggedIn} from './services/AuthService';
 
-Vue.use(Router)
+/** 
+ * for more info Vue VueRouter
+ *  https://router.vuejs.org/guide/#html 
+ * */
+
+Vue.use(Router);
+
+const appnavigation = [
+  {
+    path: '/',
+    name: 'home',
+    component: Home
+  },
+  {
+    path: '/tasks',
+    name: 'tasks-all',
+    component: TasksAll,
+    beforeEnter: (to, from , next) =>{
+      if(isLoggedIn()){
+        next();
+      }else{
+        next('/login');
+      }
+    }
+  },
+  {
+    path: '/tasks/new',
+    name: 'tasks-create',
+    component: TasksCreate,
+    beforeEnter: (to, _from , next) =>{
+      if(isLoggedIn()){
+        next();
+      }else{
+        next('/login');
+      }
+    }
+  },
+  {
+    path: '/tasks/:id',
+    name: 'tasks-edit',
+    component: TasksEdit,
+    beforeEnter: (to, _from , next) =>{
+      if(isLoggedIn()){
+        next();
+      }else{
+        next('/login');
+      }
+    }
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: Register,
+    beforeEnter: (to, from , next)=>{
+      if(!isLoggedIn()){
+        next();
+      }else{
+        next("/");
+      }
+    }
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+    beforeEnter: (to, from , next)=>{
+      if(!isLoggedIn()){
+        next();
+      }else{
+        next("/");
+      }
+    }
+  },
+  {
+    path: '*',
+    redirect: '/'
+  },
+]
 
 
 const routes =  new Router({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/tasks',
-      name: 'tasks-all',
-      component: TasksAll,
-      beforeEnter: (to, from , next) =>{
-        if(isLoggedIn()){
-          next();
-        }else{
-          next('/login');
-        }
-      }
-    },
-    {
-      path: '/tasks/new',
-      name: 'tasks-create',
-      component: TasksCreate,
-      beforeEnter: (to, _from , next) =>{
-        if(isLoggedIn()){
-          next();
-        }else{
-          next('/login');
-        }
-      }
-    },
-    {
-      path: '/tasks/:id',
-      name: 'tasks-edit',
-      component: TasksEdit,
-      beforeEnter: (to, _from , next) =>{
-        if(isLoggedIn()){
-          next();
-        }else{
-          next('/login');
-        }
-      }
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: Register,
-      beforeEnter: (to, from , next)=>{
-        if(!isLoggedIn()){
-          next();
-        }else{
-          next("/");
-        }
-      }
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login,
-      beforeEnter: (to, from , next)=>{
-        if(!isLoggedIn()){
-          next();
-        }else{
-          next("/");
-        }
-      }
-    },
-    {
-      path: '*',
-      redirect: '/'
-    },
-  ],
+  routes: appnavigation,
   linkActiveClass: 'active'
 })
-
-// routes.beforeEach((to, from , next)=>{
-//   if(isLoggedIn){
-//     next();
-//   }else{
-//     next("/login");
-//   }
-// })
 
 export default routes;

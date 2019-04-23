@@ -8,7 +8,7 @@ export function generateJwt(user){
 export function requireLogin(req, res, next){
     var token = decodeToken(req);
     if(!token){
-        return res.status(401).json({message: "you need to login"});
+        return res.status(401).json({message: "you are not login"});
     }
     next();
 }

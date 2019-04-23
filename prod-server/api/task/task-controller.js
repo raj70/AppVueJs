@@ -11,6 +11,7 @@ _Object$defineProperty(exports, "__esModule", {
 });
 
 exports.index = index;
+exports.getCompleted = getCompleted;
 exports.create = create;
 exports.update = update;
 exports.remove = remove;
@@ -31,6 +32,29 @@ var auth = _interopRequireWildcard(require("../../services/auth-service"));
 function index(req, res) {
   // find all task
   _taskModel.default.find({}, function (error, tasks) {
+    if (error) {
+      return res.status(500).json();
+    }
+
+    return res.status(200).json({
+      tasks: tasks
+    });
+  }).populate('author', 'username', 'user');
+  /* other property from user model */
+
+}
+
+function getCompleted(req, res) {
+  var isCompeted = req.params.completed;
+  var id = auth.getUserId(req);
+  /* where completed =true and author._id = id */
+
+  _taskModel.default.find({
+    completed: isCompeted,
+    author: {
+      _id: id
+    }
+  }, function (error, tasks) {
     if (error) {
       return res.status(500).json();
     }
@@ -70,7 +94,6 @@ function create(req, res) {
 }
 
 function update(req, res) {
-  //update task
   var id = auth.getUserId(req);
 
   _userModel.default.findOne({
@@ -101,7 +124,6 @@ function update(req, res) {
 }
 
 function remove(req, res) {
-  //delete a task
   var id = auth.getUserId(req);
 
   _taskModel.default.findOne({
@@ -112,7 +134,7 @@ function remove(req, res) {
     }
 
     if (!task) {
-      return res.status(404).json();
+      return res.status(409).json();
     }
 
     if (task.author._id.toString() !== id) {

@@ -31,7 +31,7 @@ function requireLogin(req, res, next) {
 
   if (!token) {
     return res.status(401).json({
-      message: "you need to login"
+      message: "you are not login"
     });
   }
 

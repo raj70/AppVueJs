@@ -3,12 +3,16 @@
     <h1>All Tasks</h1>
     <div class="mb-4">        
         <router-link to="/tasks/new" class="btn btn-success ml-2">Create Task</router-link>
-    </div>   
+        <a href="#" class="btn btn-success ml-2" @click="getCompletedTask(true)">Completed Tasks</a>
+        <a href="#" class="btn btn-success ml-2" @click="getCompletedTask(false)">Not Completed Tasks</a>
+        <a href="#" class="btn btn-success ml-2" @click="allTasks">All</a>
+    </div>
+
 
     <div v-if="tasks && tasks.length > 0" class="d-flex flex-wrap justify-content-start">
 
         <div v-for="task in tasks" v-bind:key="task._id" class="card mb-2 ml-2 text-white bg-dark" style="width: 18rem;">  
-            <!-- https://getbootstrap.com/docs/4.3/components/card/           -->
+            <!-- https://getbootstrap.com/docs/4.3/components/card/ -->
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <h5 class="card-title">{{task.title.toUpperCase()}}</h5>
@@ -32,15 +36,16 @@
                     <label for="form-check-label">Completed</label>
                 </div> 
 
-                <!-- :to={ name: 'tasks-edit', params:{id:task.id}} equal to edit page + "task/id"-->
+                <!-- :to={ name: 'tasks-edit', params:{id:task.id}} equal to edit page + "task/id" -->
                 <div v-if="task.author._id === $store.state.userId" 
                     class="d-flex justfy-content-between">
 
                     <router-link type="button" tag="button" class="card-link btn btn-primary"
                     :to="{ name: 'tasks-edit', params: {id:task._id}}" exact>Edit</router-link>
 
+                    <!-- "v-b-modal.modal1" will show modal -->
                     <a v-on:click.prevent="currentTaskId = task._id" class="card-link btn btn-danger" href="#" v-b-modal.modal1>Delete</a>
-                        <!-- we have created model with id model1 below -->
+                    <!-- we have created modal with id modal1 below -->
                 </div>     
             </div>
         </div>
@@ -92,21 +97,48 @@ export default {
             return moment(date).isBefore();
         },
         cancelTask: function(){
-            this.$refs.modal.hide(); /* model refer to ref="model", above in <b-modal> */
+            this.hideModal();
             this.currentTaskId = null;
         },
         deleteTask: async function(){
-            this.cancelTask();
-            await taskService.deleteTask(this.currentTaskId);
-            const index = this.tasks.findIndex(t => t._id === this.currentTaskId);
-            this.tasks.splice(index, 1);
-            this.currentTaskId = null;
+            this.hideModal();
+            await taskService.deleteTask(this.currentTaskId).then(res =>{
+                if(res){
+                    const index = this.tasks.findIndex(t => t._id === this.currentTaskId);
+                    this.tasks.splice(index, 1);
+                    this.currentTaskId = null;
+                }
+            }).catch(error =>{
+                console.log(error);
+            });
         },
-        maskAsCompleted: function(task){
+        markAsCompleted: function(task){
             task.completed = true;
             const request = { task: task};
 
             taskService.updateTask(request);
+        },
+        hideModal: function(){
+            this.$refs.modal.hide(); /* model refer to ref="model", above in <b-modal> */
+        },
+        getCompletedTask: function(completed){
+            console.log('getCompletedTask');
+            taskService.getCompletedTask(completed).then(res=>{
+                if(res){
+                    this.tasks = res.data.tasks;
+                }
+            }).catch(error => {
+                console.log("CompletedTask Error:", error);
+            });
+        },
+        allTasks: function(){
+            taskService.getAllTasks().then(res => {
+                if(res){
+                    this.tasks = res.data.tasks;
+                }
+            }).catch(error => {
+                console.log("All Task Error", error);
+            });
         }
     }
 }

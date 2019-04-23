@@ -22,8 +22,9 @@ var router = _express.default.Router();
 
 router.post('/task', auth.requireLogin, controller.create);
 router.get('/task', auth.requireLogin, controller.index);
+router.get('/task/completed/:completed', auth.requireLogin, controller.getCompleted);
 router.get('/task/:id', auth.requireLogin, controller.show);
 router.put('/task', auth.requireLogin, controller.update);
-router.delete('/task', auth.requireLogin, controller.remove);
+router.delete('/task/:id', auth.requireLogin, controller.remove);
 var _default = router;
 exports.default = _default;

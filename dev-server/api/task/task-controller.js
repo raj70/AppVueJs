@@ -16,6 +16,19 @@ export function index(req, res){
     }).populate('author', 'username', 'user'); /* other property from user model */
 }
 
+export function getCompleted(req, res){ 
+    const isCompeted = req.params.completed;
+    const id = auth.getUserId(req);
+
+    /* where completed =true and author._id = id */
+    Task.find({completed: isCompeted, author: {_id: id}}, (error, tasks) => {
+        if(error){
+            return res.status(500).json();
+        }
+        return res.status(200).json({tasks: tasks});
+    }).populate('author', 'username', 'user'); /* other property from user model */
+}
+
 export function create(req, res){
     //create task
     const id = auth.getUserId(req);
@@ -39,7 +52,6 @@ export function create(req, res){
 }
 
 export function update(req, res){
-    //update task
     const id = auth.getUserId(req);
     User.findOne({_id:id}, (error, user) =>{
         if(error){
@@ -63,14 +75,13 @@ export function update(req, res){
 }
 
 export function remove(req, res){
-    //delete a task
     const id = auth.getUserId(req);
     Task.findOne({_id: req.params.id}, (error, task) =>{
         if(error){
             return res.status(500).json();
         }
         if(!task){
-            return res.status(404).json();
+            return res.status(409).json();
         }
 
         if(task.author._id.toString() !== id){

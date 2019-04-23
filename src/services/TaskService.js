@@ -23,3 +23,7 @@ export function deleteTask(id){
 export function updateTask(task){
     return http().put('/task', task);
 }
+
+export function getCompletedTask(completed){
+    return http().get(`/task/completed/${completed}`);
+}
