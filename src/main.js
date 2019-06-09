@@ -1,4 +1,8 @@
 import Vue from 'vue'
+import Bootstrapvue from 'bootstrap-vue';
+import moment from 'moment';
+
+
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -6,8 +10,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
 import './assets/css/style.css';
 import './assets/css/query.css';
-import Bootstrapvue from 'bootstrap-vue';
-import moment from 'moment';
+
 
 Vue.use(Bootstrapvue);
 Vue.config.productionTip = process.env.NODE_ENV === 'production';

@@ -73,73 +73,80 @@
 </template>
 
 <script>
-import * as taskService from '../../services/TaskService';
-import moment from 'moment';
+    import * as taskService from '../../services/TaskService';
+    import moment from 'moment';
 
-export default {
-    name: 'tasks-all',
-    data: function(){
-        return {
-            tasks: null,
-            currentTaskId: null
-        }
-    },
-    beforeRouteEnter(to, from, next) {
-        taskService.getAllTasks()
-            .then(res => {
-                    next(vm =>{
-                        vm.tasks = res.data.tasks;
-                    });
-            });
-    },
-    methods: {
-        taskIsLate: function(date){
-            return moment(date).isBefore();
+    export default {
+        name: 'tasks-all',
+        data: function(){
+            return {
+                tasks: null,
+                currentTaskId: null,
+                errorMessage: null
+            }
         },
-        cancelTask: function(){
-            this.hideModal();
-            this.currentTaskId = null;
+        beforeRouteEnter(to, from, next) {
+            taskService.getAllTasks()
+                .then(res => {
+                        next(vm =>{
+                            vm.tasks = res.data.tasks;
+                        });
+                });
         },
-        deleteTask: async function(){
-            this.hideModal();
-            await taskService.deleteTask(this.currentTaskId).then(res =>{
-                if(res){
-                    const index = this.tasks.findIndex(t => t._id === this.currentTaskId);
-                    this.tasks.splice(index, 1);
-                    this.currentTaskId = null;
-                }
-            }).catch(error =>{
-                console.log(error);
-            });
-        },
-        markAsCompleted: function(task){
-            task.completed = true;
-            const request = { task: task};
+        methods: {
+            taskIsLate: function(date){
+                return moment(date).isBefore();
+            },
+            cancelTask: function(){
+                this.hideModal();
+                this.currentTaskId = null;
+            },
+            deleteTask: async function(){
+                this.hideModal();
+                await taskService.deleteTask(this.currentTaskId).then(res =>{
+                    if(res){
+                        const index = this.tasks.findIndex(t => t._id === this.currentTaskId);
+                        this.tasks.splice(index, 1);
+                        this.currentTaskId = null;
+                    }
+                }).catch(error =>{                
+                    this.clearAndUpdateErrorMessage("Error has encounter while delete a task");
+                    console.log(error);
+                });
+            },
+            markAsCompleted: function(task){
+                task.completed = true;
+                const request = { task: task};
 
-            taskService.updateTask(request);
-        },
-        hideModal: function(){
-            this.$refs.modal.hide(); /* model refer to ref="model", above in <b-modal> */
-        },
-        getCompletedTask: function(completed){
-            console.log('getCompletedTask');
-            taskService.getCompletedTask(completed).then(res=>{
-                if(res){
-                    this.tasks = res.data.tasks;
-                }
-            }).catch(error => {
-                console.log("CompletedTask Error:", error);
-            });
-        },
-        allTasks: function(){
-            taskService.getAllTasks().then(res => {
-                if(res){
-                    this.tasks = res.data.tasks;
-                }
-            }).catch(error => {
-                console.log("All Task Error", error);
-            });
+                taskService.updateTask(request);
+            },
+            hideModal: function(){
+                this.$refs.modal.hide(); /* model refer to ref="model", above in <b-modal> */
+            },
+            getCompletedTask: function(completed){
+                console.log('getCompletedTask');
+                taskService.getCompletedTask(completed).then(res=>{
+                    if(res){
+                        this.tasks = res.data.tasks;
+                    }
+                }).catch(error => {
+                    this.clearAndUpdateErrorMessage("Error has encountered while getting completed task(s)");
+                    console.log(error);
+                });
+            },
+            allTasks: function(){
+                taskService.getAllTasks().then(res => {
+                    if(res){
+                        this.tasks = res.data.tasks;
+                    }
+                }).catch(error => {
+                    console.log("All Task Error", error);
+                });
+            },
+            clearAndUpdateErrorMessage: function(msg){
+                this.errorMessage = '';
+                this.errorMessage = msg;
+            }
         }
     }
-}
 </script>

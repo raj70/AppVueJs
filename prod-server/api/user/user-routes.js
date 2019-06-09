@@ -14,10 +14,12 @@ exports.default = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
+var auth = _interopRequireWildcard(require("../../services/auth-service"));
+
 var controller = _interopRequireWildcard(require("./user-controller"));
 
 var router = _express.default.Router();
 
-router.get('/user', controller.index);
+router.get('/users', auth.requireLogin, controller.index);
 var _default = router;
 exports.default = _default;

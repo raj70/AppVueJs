@@ -7,6 +7,8 @@ import TasksAll from './views/tasks/TasksAll.vue';
 import TasksCreate from './views/tasks/TasksCreate.vue';
 import TasksEdit from './views/tasks/TasksEdit.vue';
 
+import Users from './views/Users.vue';
+
 import {isLoggedIn} from './services/AuthService';
 
 /** 
@@ -83,8 +85,24 @@ const appnavigation = [
     }
   },
   {
+    path: '/Users',
+    name: 'users',
+    component: Users,
+    beforeEnter: (to, from , next)=>{
+      if(isLoggedIn()){
+        next();
+      }else{
+        next("/");
+      }
+    }
+  },
+  {
     path: '*',
-    redirect: '/'
+    redirect: '/',
+    beforeEnter: (to, from, next) =>{
+      console.log("anything");
+      next();
+    }
   },
 ]
 

@@ -69,7 +69,7 @@ npm instal vue bootstrap-vue
 
 # MongoDb
 ## to run mongo db server
- sudo mangod
+ sudo mongod
 
 ## mongoose
 https://mongoosejs.com

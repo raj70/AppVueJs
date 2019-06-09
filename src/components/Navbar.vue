@@ -38,6 +38,11 @@
           <li class="nav-item" exact>            
             <a class="nav-link" href="#">{{this.$store.state.username ? this.$store.state.username : 'User'}}</a>
           </li>
+          <li class="nav-item" exact>            
+            <router-link to="/Users" class="nav-link" exact>
+              Users
+            </router-link>
+          </li>
         </ul>
 
       </div>
